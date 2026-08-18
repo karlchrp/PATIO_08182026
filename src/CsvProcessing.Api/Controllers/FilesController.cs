@@ -5,7 +5,7 @@ namespace CsvProcessing.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/files")]
-public class FilesConrtoller : ControllerBase
+public class FilesController : ControllerBase
 {
     [HttpPost("process")]
     public async Task<ActionResult<int>> ProcessAsync()

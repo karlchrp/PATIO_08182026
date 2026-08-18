@@ -1,8 +1,21 @@
+using CsvProcessing.Api.Authentication;
 using CsvProcessing.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services
+    .AddOptions<ApiKeyOptions>()
+    .Bind(builder.Configuration.GetSection(ApiKeyOptions.SectionName))
+    .ValidateDataAnnotations()
+    .Validate(
+        options => options.Keys.Any(key => key.Enabled && !string.IsNullOrWhiteSpace(key.Key)),
+        "ApiKey:Keys must contain at least one enabled key with a non-empty value.")
+    .Validate(
+        options => options.Keys.All(key => string.IsNullOrWhiteSpace(key.Key) || key.Key.Length >= 16),
+        "Every configured API key must be at least 16 characters long.")
+    .ValidateOnStart();
+
+builder.Services.AddSingleton<IApiKeyValidator, ApiKeyValidator>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -12,6 +25,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseRouting();
+app.UseMiddleware<ApiKeyMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
