@@ -1,4 +1,10 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path="docker-compose.yml" />
+    <File Path="DockerFile" />
+    <File Path="README.md" />
+  </Folder>
   <Project Path="src/CsvProcessing.Api/CsvProcessing.Api.csproj" Id="61fef73f-0336-40c9-9564-521fafc75ddc" />
   <Project Path="src/CsvProcessing.Application/CsvProcessing.Application.csproj" Id="7fe08f6d-db31-4452-9bd7-ce2e2d39de6f" />
   <Project Path="tests/CsvProcessing.Api.Tests/CsvProcessing.Api.Tests.csproj" Id="99539418-4e90-4357-8ecd-501a6e10d02b" />

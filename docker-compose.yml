@@ -1,0 +1,8 @@
+services:
+  api:
+    build: .
+    image: csvprocessing
+    container_name: csvprocessing
+    ports:
+      - "8080:8080"
+    restart: on-failure:3
