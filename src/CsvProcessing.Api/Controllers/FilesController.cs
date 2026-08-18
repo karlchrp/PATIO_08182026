@@ -1,7 +1,8 @@
-using System.Diagnostics;
 using CsvProcessing.Api.Contracts;
 using CsvProcessing.Application.Csv;
+using CsvProcessing.Application.Tracking;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace CsvProcessing.Api.Controllers;
 
@@ -13,11 +14,13 @@ public class FilesController : ControllerBase
     private const long MaxFileSizeBytes = 10 * 1024 * 1024;
 
     private readonly ICsvFileProcessor _processor;
+    private readonly IFileProcessingTracker _tracker;
     private readonly ILogger<FilesController> _logger;
 
-    public FilesController(ICsvFileProcessor processor, ILogger<FilesController> logger)
+    public FilesController(ICsvFileProcessor processor, IFileProcessingTracker tracker, ILogger<FilesController> logger)
     {
         _processor = processor;
+        _tracker = tracker;
         _logger = logger;
     }
 
@@ -72,6 +75,7 @@ public class FilesController : ControllerBase
         var result = await _processor.ProcessAsync(content, column, operation, cancellationToken);
 
         stopwatch.Stop();
+        _tracker.Record(new ProcessedFileRecord(fileName, file.Length, operation, DateTimeOffset.UtcNow, stopwatch.Elapsed.TotalMilliseconds));
 
         _logger.LogInformation(
             "Processed {FileName} ({SizeInBytes} bytes) in {DurationMs:F1} ms.",
