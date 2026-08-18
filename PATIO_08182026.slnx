@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/CsvProcessing.Api/CsvProcessing.Api.csproj" Id="61fef73f-0336-40c9-9564-521fafc75ddc" />
+  <Project Path="tests/CsvProcessing.Api.Tests/CsvProcessing.Api.Tests.csproj" Id="99539418-4e90-4357-8ecd-501a6e10d02b" />
+</Solution>
