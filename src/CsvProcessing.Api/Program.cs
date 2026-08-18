@@ -1,5 +1,6 @@
 using CsvProcessing.Api.Authentication;
 using CsvProcessing.Api.Middleware;
+using CsvProcessing.Application.Csv;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services
     .ValidateOnStart();
 
 builder.Services.AddSingleton<IApiKeyValidator, ApiKeyValidator>();
+builder.Services.AddSingleton<ICsvFileProcessor, CsvFileProcessor>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

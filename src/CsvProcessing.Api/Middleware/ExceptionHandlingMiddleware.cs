@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CsvProcessing.Application.Csv;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 
@@ -31,7 +32,7 @@ namespace CsvProcessing.Api.Middleware
         {
             var (statusCode, title) = exception switch
             {
-                // TO DO: Add other exceptions
+                InvalidCsvException => (HttpStatusCode.UnprocessableEntity, "Invalid file content"),
                 ValidationException => (HttpStatusCode.BadRequest, "Validation failed"),
                 _ => (HttpStatusCode.InternalServerError, "An unexpected error occurred")
             };
